@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Data Display</title>
+    <link rel="stylesheet" href="fetch-data.css">
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+#content {
+    max-width: 600px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+h1 {
+    text-align: center;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    background-color: #eee;
+    margin: 8px 0;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+    </style>
+</head>
+<body>
+    <div id="content">
+        <h1>User List</h1>
+        <div id="api-data">Loading user data...</div>
+    </div>
+    <script src="fetch-data.js"></script>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    async function fetchUserData() {
+        const apiUrl = 'https://jsonplaceholder.typicode.com/users';
+        const dataContainer = document.getElementById('api-data');
+
+        try {
+            const response = await fetch(apiUrl);
+            const users = await response.json();
+
+            // Clear the loading message
+            dataContainer.innerHTML = '';
+
+            // Create and append user list
+            const userList = document.createElement('ul');
+            users.forEach(user => {
+                const listItem = document.createElement('li');
+                listItem.textContent = user.name;
+                userList.appendChild(listItem);
+            });
+
+            dataContainer.appendChild(userList);
+        } catch (error) {
+            // Handle errors
+            dataContainer.innerHTML = 'Failed to load user data.';
+        }
+    }
+
+    fetchUserData();
+});
+
+</script>
+</html>
